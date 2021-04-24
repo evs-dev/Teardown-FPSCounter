@@ -15,3 +15,12 @@ function getShowPrefix()
  end
  return GetBool(KEY_SHOW_PREFIX)
 end
+
+KEY_NUM_DECIMAL_FIGURES = "savegame.mod.numDecimalFigures"
+
+function getNumDecimalFigures()
+ if not HasKey(KEY_NUM_DECIMAL_FIGURES) then
+  SetInt(KEY_NUM_DECIMAL_FIGURES, 0)
+ end
+ return GetInt(KEY_NUM_DECIMAL_FIGURES)
+end
