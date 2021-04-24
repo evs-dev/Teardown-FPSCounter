@@ -19,6 +19,7 @@ function drawSlider(value, mapSliderValueFunc, formatLabelFunc, doneFunc)
   UiTranslate(0, -22)
   UiText(formatLabelFunc(mappedValue))
  UiPop()
+ UiTranslate(0, 60)
  if done then doneFunc(mappedValue) return end
 end
 
@@ -36,7 +37,7 @@ function drawCheckbox(checked, label, clickedFunc)
   UiTranslate(boxSize, 0)
   UiText(label)
  UiPop()
- UiTranslate(0, 30)
+ UiTranslate(0, 60)
 end
 
 function draw()
@@ -50,8 +51,17 @@ function draw()
  UiFont("regular.ttf", 26)
  UiButtonImageBox("ui/common/box-outline-6.png", 6, 6)
 
+ -- Show prefix
+ UiTranslate(0, 70)
+ drawCheckbox(
+  getShowPrefix(),
+  "Show \"FPS: \" Prefix",
+  function()
+   SetBool(KEY_SHOW_PREFIX, not getShowPrefix())
+  end
+ )
+
  -- Update frequency
- UiTranslate(0, 100)
  drawSlider(
   updateFreqSlider,
   function(sliderValue)
@@ -66,18 +76,7 @@ function draw()
   end
  )
 
- -- Show prefix
- UiTranslate(0, 40)
- drawCheckbox(
-  getShowPrefix(),
-  "Show \"FPS: \" Prefix",
-  function()
-   SetBool(KEY_SHOW_PREFIX, not getShowPrefix())
-  end
- )
-
  -- Number of decimal figures
- UiTranslate(0, 40)
  drawSlider(
   numDecimalFiguresSlider,
   function(sliderValue)
@@ -93,7 +92,6 @@ function draw()
  )
 
  -- Close button
- UiTranslate(0, 100)
  if UiTextButton("Close", 200, 40) then
   Menu()
  end
