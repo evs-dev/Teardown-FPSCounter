@@ -1,6 +1,13 @@
-local UPDATE_FREQUENCY = 0.5 -- seconds
+local UPDATE_FREQUENCY -- seconds
 local fps = 0
 local timeSinceLastUpdate = 0
+
+function init()
+ if not HasKey("savegame.mod.updateFrequency") then
+  SetFloat("savegame.mod.updateFrequency", 0.2)
+ end
+ UPDATE_FREQUENCY = GetFloat("savegame.mod.updateFrequency")
+end
 
 function tick(dt)
  if timeSinceLastUpdate < UPDATE_FREQUENCY and fps > 0 then

@@ -20,7 +20,7 @@ function draw()
  UiTranslate(0, 100)
  UiPush()
   if not HasKey("savegame.mod.updateFrequency") then
-   SetFloat("savegame.mod.updateFrequency", 0.5)
+   SetFloat("savegame.mod.updateFrequency", 0.2)
   end
   UiRect(200, 5)
   UiPush()
