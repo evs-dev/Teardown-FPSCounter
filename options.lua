@@ -19,12 +19,12 @@ function drawSlider(value, mapSliderValueFunc, formatLabelFunc, doneFunc)
   UiTranslate(0, -22)
   UiText(formatLabelFunc(mappedValue))
  UiPop()
+ if done then doneFunc(mappedValue) end
  UiTranslate(0, 60)
- if done then doneFunc(mappedValue) return end
 end
 
 function drawCheckbox(checked, label, clickedFunc)
- local image = checked and "ui/common/box-solid-6.png" or "ui/common/box-outline-6.png"
+ local image = "ui/common/box-"..(checked and "solid-6.png" or "outline-6.png")
  local boxSize = 24
  local width = UiGetTextSize(label) + boxSize
  UiPush()
@@ -49,10 +49,9 @@ function draw()
  UiText("FPSCounter Options")
 
  UiFont("regular.ttf", 26)
- UiButtonImageBox("ui/common/box-outline-6.png", 6, 6)
+ UiTranslate(0, 70)
 
  -- Show prefix
- UiTranslate(0, 70)
  drawCheckbox(
   getShowPrefix(),
   "Show \"FPS: \" Prefix",
@@ -92,6 +91,7 @@ function draw()
  )
 
  -- Close button
+ UiButtonImageBox("ui/common/box-outline-6.png", 6, 6)
  if UiTextButton("Close", 200, 40) then
   Menu()
  end
