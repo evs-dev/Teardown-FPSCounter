@@ -1,6 +1,6 @@
 local updateFreqSlider = 0
 
-function round(x, d)
+function roundToNearest(x, d)
 	d = d or 1
 	return math.floor(x / d + 0.5) * d
 end
@@ -27,7 +27,7 @@ function draw()
    UiTranslate(-100, 0)
    updateFreqSlider, done = UiSlider("ui/common/dot.png", "x", updateFreqSlider, 0, 200)
   UiPop()
-  local updateFrequency = round(updateFreqSlider / 100, 0.1)
+  local updateFrequency = roundToNearest(updateFreqSlider / 100, 0.1)
   if done then
    SetFloat("savegame.mod.updateFrequency", updateFrequency)
   end
