@@ -1,11 +1,13 @@
 #include "keys.lua"
 
 local UPDATE_FREQUENCY -- seconds
+local PREFIX
 local fps = 0
 local timeSinceLastUpdate = 0
 
 function init()
  UPDATE_FREQUENCY = getUpdateFrequency()
+ PREFIX = getShowPrefix() and "FPS: " or ""
 end
 
 function tick(dt)
@@ -20,5 +22,5 @@ end
 function draw()
  UiTranslate(100, 100)
  UiFont("regular.ttf", 26)
- UiText("FPS: "..fps)
+ UiText(PREFIX..fps)
 end

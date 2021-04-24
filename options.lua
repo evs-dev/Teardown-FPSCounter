@@ -36,6 +36,18 @@ function draw()
   UiPop()
  UiPop()
 
+ -- Show prefix
+ UiTranslate(0, 40)
+ UiPush()
+  UiText("Show \"FPS\" Prefix")
+  UiTranslate(0, 22)
+  UiButtonImageBox()
+  local showPrefix = getShowPrefix()
+  if UiTextButton(showPrefix and "Enabled" or "Disabled") then
+   SetBool(KEY_SHOW_PREFIX, not showPrefix)
+  end
+ UiPop()
+
  -- Close button
  UiTranslate(0, 100)
  if UiTextButton("Close", 200, 40) then

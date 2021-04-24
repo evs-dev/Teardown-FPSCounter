@@ -6,3 +6,12 @@ function getUpdateFrequency()
  end
  return GetFloat(KEY_UPDATE_FREQUENCY)
 end
+
+KEY_SHOW_PREFIX = "savegame.mod.showPrefix"
+
+function getShowPrefix()
+ if not HasKey(KEY_SHOW_PREFIX) then
+  SetBool(KEY_SHOW_PREFIX, true)
+ end
+ return GetBool(KEY_SHOW_PREFIX)
+end
