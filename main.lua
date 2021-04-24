@@ -1,12 +1,11 @@
+#include "keys.lua"
+
 local UPDATE_FREQUENCY -- seconds
 local fps = 0
 local timeSinceLastUpdate = 0
 
 function init()
- if not HasKey("savegame.mod.updateFrequency") then
-  SetFloat("savegame.mod.updateFrequency", 0.2)
- end
- UPDATE_FREQUENCY = GetFloat("savegame.mod.updateFrequency")
+ UPDATE_FREQUENCY = getUpdateFrequency()
 end
 
 function tick(dt)

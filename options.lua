@@ -1,4 +1,6 @@
-local updateFreqSlider = 0
+#include "keys.lua"
+
+local updateFreqSlider = getUpdateFrequency() * 100
 
 function roundToNearest(x, d)
 	d = d or 1
@@ -19,9 +21,6 @@ function draw()
  -- Update frequency
  UiTranslate(0, 100)
  UiPush()
-  if not HasKey("savegame.mod.updateFrequency") then
-   SetFloat("savegame.mod.updateFrequency", 0.2)
-  end
   UiRect(200, 5)
   UiPush()
    UiTranslate(-100, 0)
@@ -29,7 +28,7 @@ function draw()
   UiPop()
   local updateFrequency = roundToNearest(updateFreqSlider / 100, 0.1)
   if done then
-   SetFloat("savegame.mod.updateFrequency", updateFrequency)
+   SetFloat(KEY_UPDATE_FREQUENCY, updateFrequency)
   end
   UiPush()
    UiTranslate(0, -22)
