@@ -1,0 +1,3 @@
+name = FPSCounter
+author = EvsDev
+description = A simple and accurate FPS counter.
