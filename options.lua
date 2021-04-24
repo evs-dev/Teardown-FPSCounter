@@ -22,6 +22,23 @@ function drawSlider(value, mapSliderValueFunc, formatLabelFunc, doneFunc)
  if done then doneFunc(mappedValue) return end
 end
 
+function drawCheckbox(checked, label, clickedFunc)
+ local image = checked and "ui/common/box-solid-6.png" or "ui/common/box-outline-6.png"
+ local boxSize = 24
+ local width = UiGetTextSize(label) + boxSize
+ UiPush()
+  UiAlign("left middle")
+  UiTranslate(-width / 2, 0)
+  UiButtonImageBox()
+  if UiImageButton(image, boxSize, boxSize) then
+   clickedFunc()
+  end
+  UiTranslate(boxSize, 0)
+  UiText(label)
+ UiPop()
+ UiTranslate(0, 30)
+end
+
 function draw()
  UiTranslate(UiCenter(), 250)
  UiAlign("center middle")
@@ -51,15 +68,13 @@ function draw()
 
  -- Show prefix
  UiTranslate(0, 40)
- UiText("Show \"FPS\" Prefix")
- UiTranslate(0, 22)
- UiPush()
-  UiButtonImageBox()
-  local showPrefix = getShowPrefix()
-  if UiTextButton(showPrefix and "Enabled" or "Disabled") then
-   SetBool(KEY_SHOW_PREFIX, not showPrefix)
+ drawCheckbox(
+  getShowPrefix(),
+  "Show \"FPS: \" Prefix",
+  function()
+   SetBool(KEY_SHOW_PREFIX, not getShowPrefix())
   end
- UiPop()
+ )
 
  -- Number of decimal figures
  UiTranslate(0, 40)
