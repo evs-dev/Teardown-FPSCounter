@@ -1,5 +1,7 @@
 #include "keys.lua"
 
+local EXTRA_SPACE = 10
+
 local updateFreqSlider = getUpdateFrequency() * 100
 local numDecimalFiguresSlider = getNumDecimalFigures() * 40
 
@@ -9,24 +11,25 @@ function roundToNearest(x, d)
 end
 
 function drawSlider(value, mapSliderValueFunc, formatLabelFunc, doneFunc)
+ -- Translate down by the height of the current font ('I' would work instead of 'O')
+ UiTranslate(0, select(2, UiGetTextSize("O")))
  UiRect(200, 5)
  UiPush()
   UiTranslate(-100, 0)
   local sliderValue, done = UiSlider("ui/common/dot.png", "x", value, 0, 200)
- UiPop()
- local mappedValue = mapSliderValueFunc(sliderValue)
- UiPush()
-  UiTranslate(0, -22)
-  UiText(formatLabelFunc(mappedValue))
+  local mappedValue = mapSliderValueFunc(sliderValue)
+  UiTranslate(100, -22)
+  local textWidth, textHeight = UiText(formatLabelFunc(mappedValue))
  UiPop()
  if done then doneFunc(mappedValue) end
- UiTranslate(0, 60)
+ UiTranslate(0, textHeight + EXTRA_SPACE)
 end
 
 function drawCheckbox(checked, label, clickedFunc)
  local image = "ui/common/box-"..(checked and "solid-6.png" or "outline-6.png")
  local boxSize = 24
- local width = UiGetTextSize(label) + boxSize
+ local textWidth, textHeight = UiGetTextSize(label)
+ local width = textWidth + boxSize
  UiPush()
   UiAlign("left middle")
   UiTranslate(-width / 2, 0)
@@ -37,7 +40,7 @@ function drawCheckbox(checked, label, clickedFunc)
   UiTranslate(boxSize, 0)
   UiText(label)
  UiPop()
- UiTranslate(0, 60)
+ UiTranslate(0, textHeight + EXTRA_SPACE)
 end
 
 function draw()
@@ -91,6 +94,7 @@ function draw()
  )
 
  -- Close button
+ UiTranslate(0, 20)
  UiButtonImageBox("ui/common/box-outline-6.png", 6, 6)
  if UiTextButton("Close", 200, 40) then
   Menu()
