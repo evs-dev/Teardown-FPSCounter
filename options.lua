@@ -8,6 +8,20 @@ function roundToNearest(x, d)
 	return math.floor(x / d + 0.5) * d
 end
 
+function drawSlider(value, mapSliderValueFunc, formatLabelFunc, doneFunc)
+ UiRect(200, 5)
+ UiPush()
+  UiTranslate(-100, 0)
+  local sliderValue, done = UiSlider("ui/common/dot.png", "x", value, 0, 200)
+ UiPop()
+ local mappedValue = mapSliderValueFunc(sliderValue)
+ UiPush()
+  UiTranslate(0, -22)
+  UiText(formatLabelFunc(mappedValue))
+ UiPop()
+ if done then doneFunc(mappedValue) return end
+end
+
 function draw()
  UiTranslate(UiCenter(), 250)
  UiAlign("center middle")
@@ -21,21 +35,19 @@ function draw()
 
  -- Update frequency
  UiTranslate(0, 100)
- UiPush()
-  UiRect(200, 5)
-  UiPush()
-   UiTranslate(-100, 0)
-   updateFreqSlider, done = UiSlider("ui/common/dot.png", "x", updateFreqSlider, 0, 200)
-  UiPop()
-  local updateFrequency = roundToNearest(updateFreqSlider / 100, 0.1)
-  if done then
-   SetFloat(KEY_UPDATE_FREQUENCY, updateFrequency)
+ drawSlider(
+  updateFreqSlider,
+  function(sliderValue)
+   updateFreqSlider = sliderValue
+   return roundToNearest(sliderValue / 100, 0.1)
+  end,
+  function(mappedValue)
+   return mappedValue.." seconds"
+  end,
+  function(mappedValue)
+   SetFloat(KEY_UPDATE_FREQUENCY, mappedValue)
   end
-  UiPush()
-   UiTranslate(0, -22)
-   UiText(updateFrequency.." seconds")
-  UiPop()
- UiPop()
+ )
 
  -- Show prefix
  UiTranslate(0, 40)
@@ -51,21 +63,19 @@ function draw()
 
  -- Number of decimal figures
  UiTranslate(0, 40)
- UiPush()
-  UiRect(200, 5)
-  UiPush()
-   UiTranslate(-100, 0)
-   numDecimalFiguresSlider, done = UiSlider("ui/common/dot.png", "x", numDecimalFiguresSlider, 0, 200)
-  UiPop()
-  local numDecimalFigures = roundToNearest(numDecimalFiguresSlider / 40, 1)
-  if done then
-   SetFloat(KEY_NUM_DECIMAL_FIGURES, numDecimalFigures)
+ drawSlider(
+  numDecimalFiguresSlider,
+  function(sliderValue)
+   numDecimalFiguresSlider = sliderValue
+   return roundToNearest(sliderValue / 40, 1)
+  end,
+  function(mappedValue)
+   return mappedValue.." decimal figures"
+  end,
+  function(mappedValue)
+   SetInt(KEY_NUM_DECIMAL_FIGURES, mappedValue)
   end
-  UiPush()
-   UiTranslate(0, -22)
-   UiText(numDecimalFigures.." decimal figures")
-  UiPop()
- UiPop()
+ )
 
  -- Close button
  UiTranslate(0, 100)
