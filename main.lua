@@ -1,13 +1,13 @@
 #include "keys.lua"
 
-local UPDATE_FREQUENCY
 local PREFIX
-local NUM_DECIMAL_FIGURES
-local DISTANCE_FROM_CORNER
+local HIGH_CONTRAST
 local ALIGNMENT
 local ALIGNMENT_IS_RIGHT
 local ALIGNMENT_IS_BOTTOM
-local HIGH_CONTRAST
+local DISTANCE_FROM_CORNER
+local UPDATE_FREQUENCY
+local NUM_DECIMAL_FIGURES
 
 local fps = 0
 local timeSinceLastUpdate = 0
@@ -18,14 +18,17 @@ function roundToDecimalFigures(x, d)
 end
 
 function init()
- UPDATE_FREQUENCY = getUpdateFrequency()
  PREFIX = getShowPrefix() and "FPS: " or ""
- NUM_DECIMAL_FIGURES = getNumDecimalFigures()
- DISTANCE_FROM_CORNER = getDistanceFromCorner()
+ HIGH_CONTRAST = getHighContrast()
+
  ALIGNMENT = getAlignment()
  ALIGNMENT_IS_RIGHT = ALIGNMENT:find("right") ~= nil
  ALIGNMENT_IS_BOTTOM = ALIGNMENT:find("bottom") ~= nil
- HIGH_CONTRAST = getHighContrast()
+
+ DISTANCE_FROM_CORNER = getDistanceFromCorner()
+ UPDATE_FREQUENCY = getUpdateFrequency()
+ NUM_DECIMAL_FIGURES = getNumDecimalFigures()
+
  -- Force FPS to be updated instantly rather than starting at 0
  timeSinceLastUpdate = UPDATE_FREQUENCY
 end

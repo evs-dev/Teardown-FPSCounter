@@ -2,14 +2,14 @@
 
 local EXTRA_SPACE = 10
 
+local distanceFromCornerSlider
 local updateFreqSlider
 local numDecimalFiguresSlider
-local distanceFromCornerSlider
 
 function init()
+ distanceFromCornerSlider = getDistanceFromCorner() * 2
  updateFreqSlider = getUpdateFrequency() * 100
  numDecimalFiguresSlider = getNumDecimalFigures() * 40
- distanceFromCornerSlider = getDistanceFromCorner() * 2
 end
 
 function roundToNearest(x, d)
