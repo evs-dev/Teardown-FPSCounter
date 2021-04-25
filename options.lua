@@ -33,7 +33,7 @@ end
 function drawCheckbox(checked, label, clickedFunc)
  local image = "ui/common/box-"..(checked and "solid-6.png" or "outline-6.png")
  local boxSize = 24
- local textWidth, textHeight = UiGetTextSize(label)
+ local textWidth, textHeight = UiGetTextSize(label or "O")
  local width = textWidth + boxSize
  UiPush()
   UiAlign("left middle")
@@ -67,6 +67,30 @@ function draw()
    SetBool(KEY_SHOW_PREFIX, not getShowPrefix())
   end
  )
+
+ -- Alignment
+ UiPush()
+  UiFont("bold.ttf", 26)
+  UiText("Alignment")
+ UiPop()
+ UiTranslate(0, 24)
+ local currentAlignment = getAlignment()
+ UiPush()
+  for i, alignment in ipairs({ "Top Left", "Bottom Left", "Top Right", "Bottom Right" }) do
+   if i == 1 then UiTranslate(-100, 0) end
+   if i == 3 then UiTranslate(200, -26 - EXTRA_SPACE) end
+   if i == 2 or i == 4 then UiPush() end
+   drawCheckbox(
+    currentAlignment == alignment:lower(),
+    alignment,
+    function()
+     SetString(KEY_ALIGNMENT, alignment:lower())
+    end
+   )
+   if i == 2 or i == 4 then UiPop() end
+  end
+ UiPop()
+ UiTranslate(0, 65 + EXTRA_SPACE)
 
  -- Update frequency
  drawSlider(

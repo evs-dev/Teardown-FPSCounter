@@ -24,3 +24,12 @@ function getNumDecimalFigures()
  end
  return GetInt(KEY_NUM_DECIMAL_FIGURES)
 end
+
+KEY_ALIGNMENT = "savegame.mod.alignment"
+
+function getAlignment()
+ if not HasKey(KEY_ALIGNMENT) then
+  SetString(KEY_ALIGNMENT, "top left")
+ end
+ return GetString(KEY_ALIGNMENT)
+end
