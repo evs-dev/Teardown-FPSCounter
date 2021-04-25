@@ -71,7 +71,7 @@ function draw()
    return roundToNearest(sliderValue / 100, 0.1)
   end,
   function(mappedValue)
-   return mappedValue.." seconds"
+   return "Update Frequency: "..mappedValue.." seconds"
   end,
   function(mappedValue)
    SetFloat(KEY_UPDATE_FREQUENCY, mappedValue)
