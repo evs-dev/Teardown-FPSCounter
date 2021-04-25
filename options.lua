@@ -2,8 +2,13 @@
 
 local EXTRA_SPACE = 10
 
-local updateFreqSlider = getUpdateFrequency() * 100
-local numDecimalFiguresSlider = getNumDecimalFigures() * 40
+local updateFreqSlider
+local numDecimalFiguresSlider
+
+function init()
+ updateFreqSlider = getUpdateFrequency() * 100
+ numDecimalFiguresSlider = getNumDecimalFigures() * 40
+end
 
 function roundToNearest(x, d)
 	d = d or 1
@@ -93,8 +98,16 @@ function draw()
   end
  )
 
- -- Close button
+ -- Reset to default button
  UiTranslate(0, 20)
+ UiButtonImageBox("ui/common/box-outline-6.png", 6, 6, 0.7, 0.2, 0.2)
+ if UiTextButton("Reset to Default", 200, 40) then
+  ClearKey("savegame.mod")
+  init()
+ end
+
+ -- Close button
+ UiTranslate(0, 45)
  UiButtonImageBox("ui/common/box-outline-6.png", 6, 6)
  if UiTextButton("Close", 200, 40) then
   Menu()
