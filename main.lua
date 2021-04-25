@@ -3,7 +3,7 @@
 local UPDATE_FREQUENCY
 local PREFIX
 local NUM_DECIMAL_FIGURES
-local DISTANCE_FROM_CORNER = getDistanceFromCorner()
+local DISTANCE_FROM_CORNER
 local ALIGNMENT_IS_RIGHT
 local ALIGNMENT_IS_BOTTOM
 local HIGH_CONTRAST
@@ -20,6 +20,7 @@ function init()
  UPDATE_FREQUENCY = getUpdateFrequency()
  PREFIX = getShowPrefix() and "FPS: " or ""
  NUM_DECIMAL_FIGURES = getNumDecimalFigures()
+ DISTANCE_FROM_CORNER = getDistanceFromCorner()
  local alignment = getAlignment()
  ALIGNMENT_IS_RIGHT = alignment:find("right") ~= nil
  ALIGNMENT_IS_BOTTOM = alignment:find("bottom") ~= nil
