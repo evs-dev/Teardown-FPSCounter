@@ -4,6 +4,7 @@ local UPDATE_FREQUENCY
 local PREFIX
 local NUM_DECIMAL_FIGURES
 local DISTANCE_FROM_CORNER
+local ALIGNMENT
 local ALIGNMENT_IS_RIGHT
 local ALIGNMENT_IS_BOTTOM
 local HIGH_CONTRAST
@@ -21,9 +22,9 @@ function init()
  PREFIX = getShowPrefix() and "FPS: " or ""
  NUM_DECIMAL_FIGURES = getNumDecimalFigures()
  DISTANCE_FROM_CORNER = getDistanceFromCorner()
- local alignment = getAlignment()
- ALIGNMENT_IS_RIGHT = alignment:find("right") ~= nil
- ALIGNMENT_IS_BOTTOM = alignment:find("bottom") ~= nil
+ ALIGNMENT = getAlignment()
+ ALIGNMENT_IS_RIGHT = ALIGNMENT:find("right") ~= nil
+ ALIGNMENT_IS_BOTTOM = ALIGNMENT:find("bottom") ~= nil
  HIGH_CONTRAST = getHighContrast()
  -- Force FPS to be updated instantly rather than starting at 0
  timeSinceLastUpdate = UPDATE_FREQUENCY
@@ -39,7 +40,7 @@ function tick(dt)
 end
 
 function draw()
- if ALIGNMENT_IS_RIGHT then UiAlign("right middle") end
+ UiAlign(ALIGNMENT)
  UiTranslate(
   ALIGNMENT_IS_RIGHT and UiWidth() - DISTANCE_FROM_CORNER or DISTANCE_FROM_CORNER,
   ALIGNMENT_IS_BOTTOM and UiHeight() - DISTANCE_FROM_CORNER or DISTANCE_FROM_CORNER
