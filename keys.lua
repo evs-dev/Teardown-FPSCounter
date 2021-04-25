@@ -47,7 +47,7 @@ KEY_DISTANCE_FROM_CORNER = "savegame.mod.distanceFromCorner"
 
 function getDistanceFromCorner()
  if not HasKey(KEY_DISTANCE_FROM_CORNER) then
-  SetInt(KEY_DISTANCE_FROM_CORNER, 40)
+  SetInt(KEY_DISTANCE_FROM_CORNER, 30)
  end
  return GetInt(KEY_DISTANCE_FROM_CORNER)
 end
