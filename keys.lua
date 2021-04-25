@@ -33,3 +33,12 @@ function getAlignment()
  end
  return GetString(KEY_ALIGNMENT)
 end
+
+KEY_HIGH_CONTRAST = "savegame.mod.highContrast"
+
+function getHighContrast()
+ if not HasKey(KEY_HIGH_CONTRAST) then
+  SetBool(KEY_HIGH_CONTRAST, false)
+ end
+ return GetBool(KEY_HIGH_CONTRAST)
+end

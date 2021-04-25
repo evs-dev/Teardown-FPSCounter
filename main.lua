@@ -6,6 +6,7 @@ local NUM_DECIMAL_FIGURES
 local OFFSET = 100
 local ALIGNMENT_IS_RIGHT
 local ALIGNMENT_IS_BOTTOM
+local HIGH_CONTRAST
 
 local fps = 0
 local timeSinceLastUpdate = 0
@@ -22,6 +23,7 @@ function init()
  local alignment = getAlignment()
  ALIGNMENT_IS_RIGHT = alignment:find("right") ~= nil
  ALIGNMENT_IS_BOTTOM = alignment:find("bottom") ~= nil
+ HIGH_CONTRAST = getHighContrast()
  -- Force FPS to be updated instantly rather than starting at 0
  timeSinceLastUpdate = UPDATE_FREQUENCY
 end
@@ -42,5 +44,8 @@ function draw()
   ALIGNMENT_IS_BOTTOM and UiHeight() - OFFSET or OFFSET
  )
  UiFont("regular.ttf", 26)
+ if HIGH_CONTRAST then
+  UiColor(0, 1, 0)
+ end
  UiText(PREFIX..fps)
 end

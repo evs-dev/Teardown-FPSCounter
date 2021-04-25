@@ -68,6 +68,15 @@ function draw()
   end
  )
 
+ -- High contrast colour
+ drawCheckbox(
+  getHighContrast(),
+  "High Contrast Colour",
+  function()
+   SetBool(KEY_HIGH_CONTRAST, not getHighContrast())
+  end
+ )
+
  -- Alignment
  UiPush()
   UiFont("bold.ttf", 26)
