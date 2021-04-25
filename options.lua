@@ -4,10 +4,12 @@ local EXTRA_SPACE = 10
 
 local updateFreqSlider
 local numDecimalFiguresSlider
+local distanceFromCornerSlider
 
 function init()
  updateFreqSlider = getUpdateFrequency() * 100
  numDecimalFiguresSlider = getNumDecimalFigures() * 40
+ distanceFromCornerSlider = getDistanceFromCorner() * 2
 end
 
 function roundToNearest(x, d)
@@ -100,6 +102,21 @@ function draw()
   end
  UiPop()
  UiTranslate(0, 65 + EXTRA_SPACE)
+
+ -- Distance from corner
+ drawSlider(
+  distanceFromCornerSlider,
+  function(sliderValue)
+   distanceFromCornerSlider = sliderValue
+   return roundToNearest(sliderValue / 2, 1)
+  end,
+  function(mappedValue)
+   return "Distance From Corner: "..mappedValue
+  end,
+  function(mappedValue)
+   SetInt(KEY_DISTANCE_FROM_CORNER, mappedValue)
+  end
+ )
 
  -- Update frequency
  drawSlider(

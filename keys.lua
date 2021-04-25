@@ -42,3 +42,12 @@ function getHighContrast()
  end
  return GetBool(KEY_HIGH_CONTRAST)
 end
+
+KEY_DISTANCE_FROM_CORNER = "savegame.mod.distanceFromCorner"
+
+function getDistanceFromCorner()
+ if not HasKey(KEY_DISTANCE_FROM_CORNER) then
+  SetInt(KEY_DISTANCE_FROM_CORNER, 40)
+ end
+ return GetInt(KEY_DISTANCE_FROM_CORNER)
+end

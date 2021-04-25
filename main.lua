@@ -3,7 +3,7 @@
 local UPDATE_FREQUENCY
 local PREFIX
 local NUM_DECIMAL_FIGURES
-local OFFSET = 100
+local DISTANCE_FROM_CORNER = getDistanceFromCorner()
 local ALIGNMENT_IS_RIGHT
 local ALIGNMENT_IS_BOTTOM
 local HIGH_CONTRAST
@@ -40,8 +40,8 @@ end
 function draw()
  if ALIGNMENT_IS_RIGHT then UiAlign("right middle") end
  UiTranslate(
-  ALIGNMENT_IS_RIGHT and UiWidth() - OFFSET or OFFSET,
-  ALIGNMENT_IS_BOTTOM and UiHeight() - OFFSET or OFFSET
+  ALIGNMENT_IS_RIGHT and UiWidth() - DISTANCE_FROM_CORNER or DISTANCE_FROM_CORNER,
+  ALIGNMENT_IS_BOTTOM and UiHeight() - DISTANCE_FROM_CORNER or DISTANCE_FROM_CORNER
  )
  UiFont("regular.ttf", 26)
  if HIGH_CONTRAST then
