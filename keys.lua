@@ -51,3 +51,12 @@ function getNumDecimalFigures()
  end
  return GetInt(KEY_NUM_DECIMAL_FIGURES)
 end
+
+KEY_SIZE = "savegame.mod.size"
+
+function getSize()
+ if not HasKey(KEY_SIZE) then
+  SetInt(KEY_SIZE, 26)
+ end
+ return GetInt(KEY_SIZE)
+end

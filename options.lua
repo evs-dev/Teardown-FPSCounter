@@ -5,11 +5,13 @@ local EXTRA_SPACE = 10
 local distanceFromCornerSlider
 local updateFreqSlider
 local numDecimalFiguresSlider
+local sizeSlider
 
 function init()
  distanceFromCornerSlider = getDistanceFromCorner() * 2
  updateFreqSlider = getUpdateFrequency() * 100
  numDecimalFiguresSlider = getNumDecimalFigures() * 40
+ sizeSlider = getSize() * 2
 end
 
 function roundToNearest(x, d)
@@ -145,6 +147,21 @@ function draw()
   end,
   function(mappedValue)
    SetInt(KEY_NUM_DECIMAL_FIGURES, mappedValue)
+  end
+ )
+
+ -- Size
+ drawSlider(
+  sizeSlider,
+  function(sliderValue)
+   sizeSlider = sliderValue
+   return roundToNearest(sliderValue / 2, 1)
+  end,
+  function(mappedValue)
+   return "Size: "..mappedValue
+  end,
+  function(mappedValue)
+   SetInt(KEY_SIZE, mappedValue)
   end
  )
 

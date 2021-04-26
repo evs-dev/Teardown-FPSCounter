@@ -8,6 +8,7 @@ local ALIGNMENT_IS_BOTTOM
 local DISTANCE_FROM_CORNER
 local UPDATE_FREQUENCY
 local NUM_DECIMAL_FIGURES
+local SIZE
 
 local fps = 0
 local timeSinceLastUpdate = 0
@@ -28,6 +29,7 @@ function init()
  DISTANCE_FROM_CORNER = getDistanceFromCorner()
  UPDATE_FREQUENCY = getUpdateFrequency()
  NUM_DECIMAL_FIGURES = getNumDecimalFigures()
+ SIZE = getSize()
 
  -- Force FPS to be updated instantly rather than starting at 0
  timeSinceLastUpdate = UPDATE_FREQUENCY
@@ -48,7 +50,7 @@ function draw()
   ALIGNMENT_IS_RIGHT and UiWidth() - DISTANCE_FROM_CORNER or DISTANCE_FROM_CORNER,
   ALIGNMENT_IS_BOTTOM and UiHeight() - DISTANCE_FROM_CORNER or DISTANCE_FROM_CORNER
  )
- UiFont("regular.ttf", 26)
+ UiFont("regular.ttf", SIZE)
  if HIGH_CONTRAST then
   UiColor(0, 1, 0)
  end
