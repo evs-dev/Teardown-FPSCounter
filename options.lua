@@ -172,7 +172,7 @@ function draw()
    return roundToNearest(sliderValue / 40, 1)
   end,
   function(mappedValue)
-   return mappedValue.." decimal figures"
+   return "Decimal Places: "..mappedValue
   end,
   function(mappedValue)
    SetInt(KEY_NUM_DECIMAL_FIGURES, mappedValue)
