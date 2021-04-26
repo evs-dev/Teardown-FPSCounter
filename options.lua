@@ -1,13 +1,16 @@
 #include "keys.lua"
 
 local EXTRA_SPACE = 10
+local ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+local showHideKeybindSlider
 local distanceFromCornerSlider
 local updateFreqSlider
 local numDecimalFiguresSlider
 local sizeSlider
 
 function init()
+ showHideKeybindSlider = ALPHABET:find(getShowHideKeybind()) * 8 - 1
  distanceFromCornerSlider = getDistanceFromCorner() * 2
  updateFreqSlider = getUpdateFrequency() * 100
  numDecimalFiguresSlider = getNumDecimalFigures() * 40
@@ -80,6 +83,32 @@ function draw()
    SetBool(KEY_HIGH_CONTRAST, not getHighContrast())
   end
  )
+
+ -- Enable show/hide keybind
+ drawCheckbox(
+  getEnableShowHideKeybind(),
+  "Enable Show/Hide Keybind",
+  function()
+   SetBool(KEY_ENABLE_SHOW_HIDE_KEYBIND, not getEnableShowHideKeybind())
+  end
+ )
+
+ if getEnableShowHideKeybind() then
+  drawSlider(
+   showHideKeybindSlider,
+   function(sliderValue)
+    showHideKeybindSlider = sliderValue
+    local index = sliderValue / 8 + 1
+    return ALPHABET:sub(index, index)
+   end,
+   function(mappedValue)
+    return "Show/Hide Keybind: "..mappedValue
+   end,
+   function(mappedValue)
+    SetString(KEY_SHOW_HIDE_KEYBIND, mappedValue)
+   end
+  )
+ end
 
  -- Alignment
  UiPush()

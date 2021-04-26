@@ -16,6 +16,24 @@ function getHighContrast()
  return GetBool(KEY_HIGH_CONTRAST)
 end
 
+KEY_ENABLE_SHOW_HIDE_KEYBIND = "savegame.mod.enableShowHideKeybind"
+
+function getEnableShowHideKeybind()
+ if not HasKey(KEY_ENABLE_SHOW_HIDE_KEYBIND) then
+  SetBool(KEY_ENABLE_SHOW_HIDE_KEYBIND, false)
+ end
+ return GetBool(KEY_ENABLE_SHOW_HIDE_KEYBIND)
+end
+
+KEY_SHOW_HIDE_KEYBIND = "savegame.mod.showHideKeybind"
+
+function getShowHideKeybind()
+ if not HasKey(KEY_SHOW_HIDE_KEYBIND) then
+  SetString(KEY_SHOW_HIDE_KEYBIND, "H")
+ end
+ return GetString(KEY_SHOW_HIDE_KEYBIND)
+end
+
 KEY_ALIGNMENT = "savegame.mod.alignment"
 
 function getAlignment()

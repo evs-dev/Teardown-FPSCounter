@@ -2,6 +2,8 @@
 
 local PREFIX
 local HIGH_CONTRAST
+local ENABLE_SHOW_HIDE_KEYBIND
+local SHOW_HIDE_KEYBIND
 local ALIGNMENT
 local ALIGNMENT_IS_RIGHT
 local ALIGNMENT_IS_BOTTOM
@@ -12,6 +14,7 @@ local SIZE
 
 local fps = 0
 local timeSinceLastUpdate = 0
+local visible = true
 
 function roundToDecimalFigures(x, d)
  local mult = 10^(d or 0)
@@ -21,6 +24,8 @@ end
 function init()
  PREFIX = getShowPrefix() and "FPS: " or ""
  HIGH_CONTRAST = getHighContrast()
+ ENABLE_SHOW_HIDE_KEYBIND = getEnableShowHideKeybind()
+ SHOW_HIDE_KEYBIND = getShowHideKeybind()
 
  ALIGNMENT = getAlignment()
  ALIGNMENT_IS_RIGHT = ALIGNMENT:find("right") ~= nil
@@ -38,13 +43,18 @@ end
 function tick(dt)
  if timeSinceLastUpdate < UPDATE_FREQUENCY then
   timeSinceLastUpdate = timeSinceLastUpdate + dt
- else
+ elseif visible then
   fps = roundToDecimalFigures(1 / dt, NUM_DECIMAL_FIGURES)
   timeSinceLastUpdate = 0
+ end
+
+ if ENABLE_SHOW_HIDE_KEYBIND and InputPressed(SHOW_HIDE_KEYBIND) then
+  visible = not visible
  end
 end
 
 function draw()
+ if not visible then return end
  UiAlign(ALIGNMENT)
  UiTranslate(
   ALIGNMENT_IS_RIGHT and UiWidth() - DISTANCE_FROM_CORNER or DISTANCE_FROM_CORNER,
