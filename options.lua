@@ -57,13 +57,13 @@ function drawCheckbox(checked, label, clickedFunc)
   translate(boxSize, 0)
   UiText(label)
  UiPop()
- translate(0, textHeight + EXTRA_SPACE)
+ translate(0, textHeight + EXTRA_SPACE - 2)
 end
 
 function draw()
- -- Aligns all options so they are always centred.
- -- Recalculates height every draw() call to account for not always visible elements.
- -- The alignment is also smoothed.
+ -- Aligns all options so they are always centred
+ -- Recalculates height every draw() call to account for not always visible elements
+ -- The alignment is also smoothed
  if verticalSize ~= lastVerticalSize then
   SetValue("verticalSizeSmooth", verticalSize, "easeout", firstDraw and 0 or 0.2)
   firstDraw = false
@@ -136,7 +136,9 @@ function draw()
   for i, alignment in ipairs({ "Top Left", "Bottom Left", "Top Right", "Bottom Right" }) do
    if i == 1 then translate(-100, 0) end
    if i == 3 then translate(200, -26 - EXTRA_SPACE) end
-   if i == 2 or i == 4 then UiPush() end
+   -- Probably faster than an unnecessary modulo
+   local isBottom = i == 2 or i == 4
+   if isBottom then UiPush() end
    drawCheckbox(
     currentAlignment == alignment:lower(),
     alignment,
@@ -144,7 +146,7 @@ function draw()
      setAlignment(alignment:lower())
     end
    )
-   if i == 2 or i == 4 then UiPop() end
+   if isBottom then UiPop() end
   end
  UiPop()
  translate(0, 65 + EXTRA_SPACE)
