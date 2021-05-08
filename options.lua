@@ -1,13 +1,23 @@
 #include "keys.lua"
+#include "util.lua"
 
 local EXTRA_SPACE = 10
-local ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+local verticalSize
+local lastVerticalSize
+local firstDraw = true
+verticalSizeSmooth = 0
 
 local showHideKeybindSlider
 local distanceFromCornerSlider
 local updateFreqSlider
 local numDecimalFiguresSlider
 local sizeSlider
+
+function translate(x, y)
+ UiTranslate(x, y)
+ verticalSize = verticalSize + y
+end
 
 function init()
  showHideKeybindSlider = ALPHABET:find(getShowHideKeybind()) * 8 - 1
@@ -17,24 +27,19 @@ function init()
  sizeSlider = getSize() * 2
 end
 
-function roundToNearest(x, d)
-	d = d or 1
-	return math.floor(x / d + 0.5) * d
-end
-
 function drawSlider(value, mapSliderValueFunc, formatLabelFunc, doneFunc)
  -- Translate down by the height of the current font ('I' would work instead of 'O')
- UiTranslate(0, select(2, UiGetTextSize("O")))
+ translate(0, select(2, UiGetTextSize("O")))
  UiRect(200, 5)
  UiPush()
-  UiTranslate(-100, 0)
+  translate(-100, 0)
   local sliderValue, done = UiSlider("ui/common/dot.png", "x", value, 0, 200)
   local mappedValue = mapSliderValueFunc(sliderValue)
-  UiTranslate(100, -22)
+  translate(100, -22)
   local textWidth, textHeight = UiText(formatLabelFunc(mappedValue))
  UiPop()
  if done then doneFunc(mappedValue) end
- UiTranslate(0, textHeight + EXTRA_SPACE)
+ translate(0, textHeight + EXTRA_SPACE)
 end
 
 function drawCheckbox(checked, label, clickedFunc)
@@ -44,19 +49,29 @@ function drawCheckbox(checked, label, clickedFunc)
  local width = textWidth + boxSize
  UiPush()
   UiAlign("left middle")
-  UiTranslate(-width / 2, 0)
+  translate(-width / 2, 0)
   UiButtonImageBox()
   if UiImageButton(image, boxSize, boxSize) then
    clickedFunc()
   end
-  UiTranslate(boxSize, 0)
+  translate(boxSize, 0)
   UiText(label)
  UiPop()
- UiTranslate(0, textHeight + EXTRA_SPACE)
+ translate(0, textHeight + EXTRA_SPACE - 2)
 end
 
 function draw()
- UiTranslate(UiCenter(), 250)
+ -- Aligns all options so they are always centred
+ -- Recalculates height every draw() call to account for not always visible elements
+ -- The alignment is also smoothed
+ if verticalSize ~= lastVerticalSize then
+  SetValue("verticalSizeSmooth", verticalSize, "easeout", firstDraw and 0 or 0.2)
+  firstDraw = false
+ end
+ lastVerticalSize = verticalSize
+ verticalSize = 0
+
+ UiTranslate(UiCenter(), UiMiddle() - verticalSizeSmooth / 2)
  UiAlign("center middle")
 
  -- Title
@@ -64,14 +79,14 @@ function draw()
  UiText("FPSCounter Options")
 
  UiFont("regular.ttf", 26)
- UiTranslate(0, 70)
+ translate(0, 70)
 
  -- Show prefix
  drawCheckbox(
   getShowPrefix(),
   "Show \"FPS: \" Prefix",
   function()
-   SetBool(KEY_SHOW_PREFIX, not getShowPrefix())
+   setShowPrefix(not getShowPrefix())
   end
  )
 
@@ -80,7 +95,7 @@ function draw()
   getHighContrast(),
   "High Contrast Colour",
   function()
-   SetBool(KEY_HIGH_CONTRAST, not getHighContrast())
+   setHighContrast(not getHighContrast())
   end
  )
 
@@ -89,7 +104,7 @@ function draw()
   getEnableShowHideKeybind(),
   "Enable Show/Hide Keybind",
   function()
-   SetBool(KEY_ENABLE_SHOW_HIDE_KEYBIND, not getEnableShowHideKeybind())
+   setEnableShowHideKeybind(not getEnableShowHideKeybind())
   end
  )
 
@@ -105,7 +120,7 @@ function draw()
     return "Show/Hide Keybind: "..mappedValue
    end,
    function(mappedValue)
-    SetString(KEY_SHOW_HIDE_KEYBIND, mappedValue)
+    setShowHideKeybind(mappedValue)
    end
   )
  end
@@ -115,24 +130,26 @@ function draw()
   UiFont("bold.ttf", 26)
   UiText("Alignment")
  UiPop()
- UiTranslate(0, 24)
+ translate(0, 24)
  local currentAlignment = getAlignment()
  UiPush()
   for i, alignment in ipairs({ "Top Left", "Bottom Left", "Top Right", "Bottom Right" }) do
-   if i == 1 then UiTranslate(-100, 0) end
-   if i == 3 then UiTranslate(200, -26 - EXTRA_SPACE) end
-   if i == 2 or i == 4 then UiPush() end
+   if i == 1 then translate(-100, 0) end
+   if i == 3 then translate(200, -26 - EXTRA_SPACE) end
+   -- Probably faster than an unnecessary modulo
+   local isBottom = i == 2 or i == 4
+   if isBottom then UiPush() end
    drawCheckbox(
     currentAlignment == alignment:lower(),
     alignment,
     function()
-     SetString(KEY_ALIGNMENT, alignment:lower())
+     setAlignment(alignment:lower())
     end
    )
-   if i == 2 or i == 4 then UiPop() end
+   if isBottom then UiPop() end
   end
  UiPop()
- UiTranslate(0, 65 + EXTRA_SPACE)
+ translate(0, 65 + EXTRA_SPACE)
 
  -- Distance from corner
  drawSlider(
@@ -145,7 +162,7 @@ function draw()
    return "Distance From Corner: "..mappedValue
   end,
   function(mappedValue)
-   SetInt(KEY_DISTANCE_FROM_CORNER, mappedValue)
+   setDistanceFromCorner(mappedValue)
   end
  )
 
@@ -160,7 +177,7 @@ function draw()
    return "Update Frequency: "..mappedValue.." seconds"
   end,
   function(mappedValue)
-   SetFloat(KEY_UPDATE_FREQUENCY, mappedValue)
+   setUpdateFrequency(mappedValue)
   end
  )
 
@@ -175,7 +192,7 @@ function draw()
    return "Decimal Places: "..mappedValue
   end,
   function(mappedValue)
-   SetInt(KEY_NUM_DECIMAL_FIGURES, mappedValue)
+   setNumDecimalFigures(mappedValue)
   end
  )
 
@@ -190,20 +207,20 @@ function draw()
    return "Size: "..mappedValue
   end,
   function(mappedValue)
-   SetInt(KEY_SIZE, mappedValue)
+   setSize(mappedValue)
   end
  )
 
  -- Reset to default button
- UiTranslate(0, 20)
+ translate(0, 20)
  UiButtonImageBox("ui/common/box-outline-6.png", 6, 6, 0.7, 0.2, 0.2)
  if UiTextButton("Reset to Default", 200, 40) then
-  ClearKey("savegame.mod")
+  resetKeysToDefault()
   init()
  end
 
  -- Close button
- UiTranslate(0, 45)
+ translate(0, 45)
  UiButtonImageBox("ui/common/box-outline-6.png", 6, 6)
  if UiTextButton("Close", 200, 40) then
   Menu()
