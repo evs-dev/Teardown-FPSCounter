@@ -215,8 +215,7 @@ function draw()
  translate(0, 20)
  UiButtonImageBox("ui/common/box-outline-6.png", 6, 6, 0.7, 0.2, 0.2)
  if UiTextButton("Reset to Default", 200, 40) then
-  ClearKey("savegame.mod")
-  updateKeys()
+  resetKeysToDefault()
   init()
  end
 

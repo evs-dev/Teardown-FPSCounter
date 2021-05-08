@@ -12,42 +12,50 @@ function updateKeys()
  getSize, setSize = key("size", 26, 0, 100)
 end
 
-function key(registerName, defaultValue, ...)
+function resetKeysToDefault()
+ ClearKey("savegame.mod")
+ updateKeys()
+end
+
+-- Create a registry entry ("key") and return a getter and setter
+function key(registryName, defaultValue, ...)
  local keyType = type(defaultValue)
  local args = {...}
  local getFunc, setFunc
- registerName = "savegame.mod."..registerName
+ registryName = "savegame.mod."..registryName
 
  if keyType == "number" then
   getFunc = function()
-   return GetFloat(registerName)
+   return GetFloat(registryName)
   end
   setFunc = function(value)
-   SetFloat(registerName, clamp(value, args[1], args[2]))
+   SetFloat(registryName, clamp(value, args[1], args[2]))
   end
  elseif keyType == "string" then
   getFunc = function()
-   return GetString(registerName)
+   return GetString(registryName)
   end
   setFunc = function(value)
-   SetString(registerName, args[1] and args[1](value) or value)
+   SetString(registryName, args[1] and args[1](value) or value)
   end
  elseif keyType == "boolean" then
   getFunc = function()
-   return GetBool(registerName)
+   return GetBool(registryName)
   end
   setFunc = function(value)
-   SetBool(registerName, value)
+   SetBool(registryName, value)
   end
  end
 
- if HasKey(registerName) then
+ if HasKey(registryName) then
   setFunc(getFunc())
  else
+  -- Set key to the given default value if it doesn't already exist
   setFunc(defaultValue)
  end
 
  return getFunc, setFunc
 end
 
+-- Ensure keys are up-to-date when this file is included in others
 updateKeys()
