@@ -1,4 +1,5 @@
 #include "keys.lua"
+#include "util.lua"
 
 local PREFIX
 local HIGH_CONTRAST
@@ -15,11 +16,6 @@ local SIZE
 local fps = 0
 local timeSinceLastUpdate = 0
 local visible = true
-
-function roundToDecimalFigures(x, d)
- local mult = 10^(d or 0)
- return math.floor(x * mult + 0.5) / mult
-end
 
 function init()
  PREFIX = getShowPrefix() and "FPS: " or ""
