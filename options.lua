@@ -1,7 +1,7 @@
 #include "keys.lua"
+#include "util.lua"
 
 local EXTRA_SPACE = 10
-local ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 local showHideKeybindSlider
 local distanceFromCornerSlider
@@ -15,11 +15,6 @@ function init()
  updateFreqSlider = getUpdateFrequency() * 100
  numDecimalFiguresSlider = getNumDecimalFigures() * 40
  sizeSlider = getSize() * 2
-end
-
-function roundToNearest(x, d)
-	d = d or 1
-	return math.floor(x / d + 0.5) * d
 end
 
 function drawSlider(value, mapSliderValueFunc, formatLabelFunc, doneFunc)
@@ -71,7 +66,7 @@ function draw()
   getShowPrefix(),
   "Show \"FPS: \" Prefix",
   function()
-   SetBool(KEY_SHOW_PREFIX, not getShowPrefix())
+   setShowPrefix(not getShowPrefix())
   end
  )
 
@@ -80,7 +75,7 @@ function draw()
   getHighContrast(),
   "High Contrast Colour",
   function()
-   SetBool(KEY_HIGH_CONTRAST, not getHighContrast())
+   setHighContrast(not getHighContrast())
   end
  )
 
@@ -89,7 +84,7 @@ function draw()
   getEnableShowHideKeybind(),
   "Enable Show/Hide Keybind",
   function()
-   SetBool(KEY_ENABLE_SHOW_HIDE_KEYBIND, not getEnableShowHideKeybind())
+   setEnableShowHideKeybind(not getEnableShowHideKeybind())
   end
  )
 
@@ -105,7 +100,7 @@ function draw()
     return "Show/Hide Keybind: "..mappedValue
    end,
    function(mappedValue)
-    SetString(KEY_SHOW_HIDE_KEYBIND, mappedValue)
+    setShowHideKeybind(mappedValue)
    end
   )
  end
@@ -126,7 +121,7 @@ function draw()
     currentAlignment == alignment:lower(),
     alignment,
     function()
-     SetString(KEY_ALIGNMENT, alignment:lower())
+     setAlignment(alignment:lower())
     end
    )
    if i == 2 or i == 4 then UiPop() end
@@ -145,7 +140,7 @@ function draw()
    return "Distance From Corner: "..mappedValue
   end,
   function(mappedValue)
-   SetInt(KEY_DISTANCE_FROM_CORNER, mappedValue)
+   setDistanceFromCorner(mappedValue)
   end
  )
 
@@ -160,7 +155,7 @@ function draw()
    return "Update Frequency: "..mappedValue.." seconds"
   end,
   function(mappedValue)
-   SetFloat(KEY_UPDATE_FREQUENCY, mappedValue)
+   setUpdateFrequency(mappedValue)
   end
  )
 
@@ -175,7 +170,7 @@ function draw()
    return "Decimal Places: "..mappedValue
   end,
   function(mappedValue)
-   SetInt(KEY_NUM_DECIMAL_FIGURES, mappedValue)
+   setNumDecimalFigures(mappedValue)
   end
  )
 
@@ -190,7 +185,7 @@ function draw()
    return "Size: "..mappedValue
   end,
   function(mappedValue)
-   SetInt(KEY_SIZE, mappedValue)
+   setSize(mappedValue)
   end
  )
 
@@ -199,6 +194,7 @@ function draw()
  UiButtonImageBox("ui/common/box-outline-6.png", 6, 6, 0.7, 0.2, 0.2)
  if UiTextButton("Reset to Default", 200, 40) then
   ClearKey("savegame.mod")
+  updateKeys()
   init()
  end
 

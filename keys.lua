@@ -1,80 +1,53 @@
-KEY_SHOW_PREFIX = "savegame.mod.showPrefix"
+#include "util.lua"
 
-function getShowPrefix()
- if not HasKey(KEY_SHOW_PREFIX) then
-  SetBool(KEY_SHOW_PREFIX, true)
- end
- return GetBool(KEY_SHOW_PREFIX)
+function updateKeys()
+ getShowPrefix, setShowPrefix = key("showPrefix", true)
+ getHighContrast, setHighContrast = key("highContrast", false)
+ getEnableShowHideKeybind, setEnableShowHideKeybind = key("enableShowHideKeybind", false)
+ getShowHideKeybind, setShowHideKeybind = key("showHideKeybind", "H", string.upper)
+ getAlignment, setAlignment = key("alignment", "top left")
+ getDistanceFromCorner, setDistanceFromCorner = key("distanceFromCorner", 10, 0, 100)
+ getUpdateFrequency, setUpdateFrequency = key("updateFrequency", 0.2, 0, 2)
+ getNumDecimalFigures, setNumDecimalFigures = key("numDecimalFigures", 0, 0, 5)
+ getSize, setSize = key("size", 26, 0, 100)
 end
 
-KEY_HIGH_CONTRAST = "savegame.mod.highContrast"
+function key(registerName, defaultValue, ...)
+ local keyType = type(defaultValue)
+ local args = {...}
+ local getFunc, setFunc
+ registerName = "savegame.mod."..registerName
 
-function getHighContrast()
- if not HasKey(KEY_HIGH_CONTRAST) then
-  SetBool(KEY_HIGH_CONTRAST, false)
+ if keyType == "number" then
+  getFunc = function()
+   return GetFloat(registerName)
+  end
+  setFunc = function(value)
+   SetFloat(registerName, clamp(value, args[1], args[2]))
+  end
+ elseif keyType == "string" then
+  getFunc = function()
+   return GetString(registerName)
+  end
+  setFunc = function(value)
+   SetString(registerName, args[1] and args[1](value) or value)
+  end
+ elseif keyType == "boolean" then
+  getFunc = function()
+   return GetBool(registerName)
+  end
+  setFunc = function(value)
+   SetBool(registerName, value)
+  end
  end
- return GetBool(KEY_HIGH_CONTRAST)
+
+ if HasKey(registerName) then
+  setFunc(getFunc())
+ else
+  setFunc(defaultValue)
+ end
+
+ return getFunc, setFunc
 end
 
-KEY_ENABLE_SHOW_HIDE_KEYBIND = "savegame.mod.enableShowHideKeybind"
-
-function getEnableShowHideKeybind()
- if not HasKey(KEY_ENABLE_SHOW_HIDE_KEYBIND) then
-  SetBool(KEY_ENABLE_SHOW_HIDE_KEYBIND, false)
- end
- return GetBool(KEY_ENABLE_SHOW_HIDE_KEYBIND)
-end
-
-KEY_SHOW_HIDE_KEYBIND = "savegame.mod.showHideKeybind"
-
-function getShowHideKeybind()
- if not HasKey(KEY_SHOW_HIDE_KEYBIND) then
-  SetString(KEY_SHOW_HIDE_KEYBIND, "H")
- end
- return GetString(KEY_SHOW_HIDE_KEYBIND)
-end
-
-KEY_ALIGNMENT = "savegame.mod.alignment"
-
-function getAlignment()
- if not HasKey(KEY_ALIGNMENT) then
-  SetString(KEY_ALIGNMENT, "top left")
- end
- return GetString(KEY_ALIGNMENT)
-end
-
-KEY_DISTANCE_FROM_CORNER = "savegame.mod.distanceFromCorner"
-
-function getDistanceFromCorner()
- if not HasKey(KEY_DISTANCE_FROM_CORNER) then
-  SetInt(KEY_DISTANCE_FROM_CORNER, 10)
- end
- return GetInt(KEY_DISTANCE_FROM_CORNER)
-end
-
-KEY_UPDATE_FREQUENCY = "savegame.mod.updateFrequency"
-
-function getUpdateFrequency()
- if not HasKey(KEY_UPDATE_FREQUENCY) then
-  SetFloat(KEY_UPDATE_FREQUENCY, 0.2)
- end
- return GetFloat(KEY_UPDATE_FREQUENCY)
-end
-
-KEY_NUM_DECIMAL_FIGURES = "savegame.mod.numDecimalFigures"
-
-function getNumDecimalFigures()
- if not HasKey(KEY_NUM_DECIMAL_FIGURES) then
-  SetInt(KEY_NUM_DECIMAL_FIGURES, 0)
- end
- return GetInt(KEY_NUM_DECIMAL_FIGURES)
-end
-
-KEY_SIZE = "savegame.mod.size"
-
-function getSize()
- if not HasKey(KEY_SIZE) then
-  SetInt(KEY_SIZE, 26)
- end
- return GetInt(KEY_SIZE)
-end
+updateKeys()
