@@ -1,21 +1,9 @@
 #include "keys.lua"
 #include "util.lua"
 
-local PREFIX
-local HIGH_CONTRAST
-local ENABLE_SHOW_HIDE_KEYBIND
-local SHOW_HIDE_KEYBIND
-local ALIGNMENT
-local ALIGNMENT_IS_RIGHT
-local ALIGNMENT_IS_BOTTOM
-local DISTANCE_FROM_CORNER
-local UPDATE_FREQUENCY
-local NUM_DECIMAL_FIGURES
-local SIZE
-
 local fps = 0
 local timeSinceLastUpdate = 0
-local visible = true
+visible = true
 
 function init()
  PREFIX = getShowPrefix() and "FPS: " or ""
