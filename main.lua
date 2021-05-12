@@ -39,7 +39,7 @@ function init()
 end
 
 function tick(dt)
- -- Quick Load doesn't run init(), so do it here to avoid nil errors.
+ -- Quick Load doesn't run init(), so do it here to avoid nil errors
  if not initted then
   init()
  end
