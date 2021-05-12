@@ -7,8 +7,8 @@ function clamp(v, min, max)
 end
 
 function roundToNearest(x, d)
-	d = d or 1
-	return math.floor(x / d + 0.5) * d
+ d = d or 1
+ return math.floor(x / d + 0.5) * d
 end
 
 function roundToDecimalFigures(x, d)
