@@ -15,7 +15,8 @@ local SIZE
 
 local fps = 0
 local timeSinceLastUpdate = 0
-local visible = true
+local initted = false
+visible = true
 
 function init()
  PREFIX = getShowPrefix() and "FPS: " or ""
@@ -32,11 +33,17 @@ function init()
  NUM_DECIMAL_FIGURES = getNumDecimalFigures()
  SIZE = getSize()
 
+ initted = true
  -- Force FPS to be updated instantly rather than starting at 0
  timeSinceLastUpdate = UPDATE_FREQUENCY
 end
 
 function tick(dt)
+ -- Quick Load doesn't run init(), so do it here to avoid nil errors
+ if not initted then
+  init()
+ end
+
  if timeSinceLastUpdate < UPDATE_FREQUENCY then
   timeSinceLastUpdate = timeSinceLastUpdate + dt
  elseif visible then
