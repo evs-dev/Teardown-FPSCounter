@@ -1,5 +1,6 @@
 #include "keys.lua"
 #include "util.lua"
+#include "counter.lua"
 
 local EXTRA_SPACE = 10
 
@@ -25,6 +26,7 @@ function init()
  updateFreqSlider = getUpdateFrequency() * 100
  numDecimalFiguresSlider = getNumDecimalFigures() * 40
  sizeSlider = getSize() * 2
+ initCounter()
 end
 
 function drawSlider(value, mapSliderValueFunc, formatLabelFunc, doneFunc)
@@ -61,6 +63,19 @@ function drawCheckbox(checked, label, clickedFunc)
 end
 
 function draw()
+ UiPush()
+  drawOptions()
+ UiPop()
+ -- Make up delta time to simulate real 60 FPS experience
+ tickCounter(1 / (math.random() + math.random(59, 61)))
+ -- Only update appearance of counter after potential change
+ if InputReleased("lmb") then
+  initCounter()
+ end
+ drawCounter()
+end
+
+function drawOptions()
  -- Aligns all options so they are always centred
  -- Recalculates height every draw() call to account for not always visible elements
  -- The alignment is also smoothed
@@ -78,8 +93,16 @@ function draw()
  UiFont("bold.ttf", 48)
  UiText("FPSCounter Options")
 
+ -- Extra information
+ UiFont("regular.ttf", 22)
+ UiTranslate(0, 36)
+ UiText("(FPS displayed in this menu is not real and is only for options demonstration)")
+ UiTranslate(0, 22)
+ UiText("(FPS values below 30 cannot be shown in game due to a game limitation)")
+
  UiFont("regular.ttf", 26)
- translate(0, 70)
+ UiTranslate(0, -36-22)
+ translate(0, 96)
 
  -- Show prefix
  drawCheckbox(
