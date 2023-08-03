@@ -66,7 +66,7 @@ function drawCounter()
  if HIGH_CONTRAST then
   UiColor(0, 1, 0)
  end
- if fps < 30 then
+ if fps <= 30 then
   fps = 30
   counterText = PREFIX.."<"..fps
  else
