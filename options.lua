@@ -96,9 +96,7 @@ function drawOptions()
  -- Extra information
  UiFont("regular.ttf", 22)
  UiTranslate(0, 36)
- UiText("(FPS displayed in this menu is not real and is only for options demonstration)")
- UiTranslate(0, 22)
- UiText("(FPS values below 30 cannot be shown in game due to a game limitation)")
+ UiText("(Finally! All FPS values, including those below 30, are now shown accurately. (Thanks devs!))")
 
  UiFont("regular.ttf", 26)
  UiTranslate(0, -36-22)
@@ -158,7 +156,7 @@ function drawOptions()
  UiPush()
   for i, alignment in ipairs({ "Top Left", "Bottom Left", "Top Right", "Bottom Right" }) do
    if i == 1 then translate(-100, 0) end
-   if i == 3 then translate(200, -26 - EXTRA_SPACE) end
+   if i == 3 then translate(200, -19 - EXTRA_SPACE) end
    -- Probably faster than an unnecessary modulo
    local isBottom = i == 2 or i == 4
    if isBottom then UiPush() end
