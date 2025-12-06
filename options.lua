@@ -66,8 +66,8 @@ function draw()
  UiPush()
   drawOptions()
  UiPop()
- -- Make up delta time to simulate real 60 FPS experience
- tickCounter(1 / (math.random() + math.random(59, 61)))
+ -- Calculate delta from FPS, which is funny
+ tickCounter(1 / math.max(GetFps(), 0.001))
  -- Only update appearance of counter after potential change
  if InputReleased("lmb") then
   initCounter()
