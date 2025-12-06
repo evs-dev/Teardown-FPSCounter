@@ -46,7 +46,7 @@ function tickCounter(dt)
  if timeSinceLastUpdate < UPDATE_FREQUENCY then
   timeSinceLastUpdate = timeSinceLastUpdate + dt
  elseif visible then
-  fps = roundToDecimalFigures(1 / dt, NUM_DECIMAL_FIGURES)
+  fps = roundToDecimalFigures(GetFps(), NUM_DECIMAL_FIGURES)
   timeSinceLastUpdate = 0
  end
 
@@ -66,7 +66,7 @@ function drawCounter()
  if HIGH_CONTRAST then
   UiColor(0, 1, 0)
  end
- if fps <= 30 then
+ if fps <= 30 and false then
   fps = 30
   counterText = PREFIX.."<"..fps
  else
